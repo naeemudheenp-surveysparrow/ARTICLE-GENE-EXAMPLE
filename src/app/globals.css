@@ -1,0 +1,521 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light;
+  --ink: #18251f;
+  --muted: #78827b;
+  --paper: #f7f8f3;
+  --green: #2f6d4e;
+  --mint: #e8f1e8;
+}
+
+@theme inline {
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font: inherit;
+}
+
+.page-shell {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0 8.3%;
+  background:
+    radial-gradient(ellipse at 70% 45%, rgba(232, 241, 232, 0.6), transparent 35%),
+    var(--paper);
+}
+
+.topbar {
+  z-index: 1;
+  display: flex;
+  height: 92px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(24, 37, 31, 0.09);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  font-size: 23px;
+  font-weight: 700;
+  letter-spacing: -1.3px;
+  text-decoration: none;
+}
+
+.brand-mark {
+  display: grid;
+  width: 29px;
+  height: 29px;
+  place-items: center;
+  border-radius: 9px;
+  background: var(--green);
+  color: white;
+  font-family: Georgia, serif;
+  font-size: 19px;
+  font-style: italic;
+  line-height: 1;
+}
+
+.brand-period {
+  color: #76a783;
+}
+
+.topbar-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #68756c;
+  font-size: 12px;
+  letter-spacing: 0.015em;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #79a987;
+  box-shadow: 0 0 0 4px rgba(121, 169, 135, 0.13);
+}
+
+.hero {
+  display: grid;
+  width: min(100%, 1120px);
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 430px);
+  align-items: center;
+  gap: clamp(52px, 8vw, 130px);
+  align-self: center;
+  padding: 70px 0 76px;
+}
+
+.intro {
+  position: relative;
+  padding: 0 0 20px;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin: 0 0 25px;
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.eyebrow-line {
+  width: 24px;
+  height: 1px;
+  background: #77a486;
+}
+
+.intro h1 {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(54px, 6.1vw, 82px);
+  font-weight: 400;
+  letter-spacing: -0.065em;
+  line-height: 0.99;
+}
+
+.intro h1 span {
+  color: var(--green);
+  font-style: italic;
+}
+
+.intro-copy {
+  position: relative;
+  z-index: 1;
+  max-width: 380px;
+  margin: 25px 0 0;
+  color: #6f7a72;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.keyboard-hint {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 37px;
+  color: #859087;
+  font-size: 11px;
+}
+
+.keyboard-icon {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border: 1px solid #dfe4dc;
+  border-radius: 7px;
+  color: var(--green);
+  font-size: 14px;
+}
+
+.decorative-orbit {
+  position: absolute;
+  z-index: 0;
+  border: 1px solid rgba(110, 150, 117, 0.13);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.orbit-one {
+  top: -50px;
+  right: -5px;
+  width: 174px;
+  height: 174px;
+}
+
+.orbit-two {
+  top: -28px;
+  right: 17px;
+  width: 130px;
+  height: 130px;
+}
+
+.calculator {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 27px 28px 20px;
+  border: 1px solid rgba(24, 37, 31, 0.08);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 28px 70px rgba(31, 55, 39, 0.09), 0 3px 9px rgba(31, 55, 39, 0.03);
+}
+
+.calculator-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.calculator-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.calculator-icon {
+  display: grid;
+  width: 37px;
+  height: 37px;
+  grid-template-columns: 1fr 1fr;
+  place-items: center;
+  border-radius: 11px;
+  background: var(--mint);
+  color: var(--green);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.calculator-name,
+.calculator-subtitle {
+  margin: 0;
+}
+
+.calculator-name {
+  color: #27372d;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.calculator-subtitle {
+  margin-top: 4px;
+  color: #9aa39b;
+  font-size: 10px;
+}
+
+.calculator-menu {
+  color: #a4ada5;
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+
+.display {
+  display: flex;
+  height: 141px;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding: 0 4px 21px;
+  text-align: right;
+}
+
+.expression {
+  width: 100%;
+  min-height: 18px;
+  overflow: hidden;
+  margin: 0 0 9px;
+  color: #98a39a;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.error-message {
+  color: #bc654f;
+}
+
+.result {
+  max-width: 100%;
+  overflow: hidden;
+  margin: 0;
+  color: #1d2c22;
+  font-size: clamp(36px, 5vw, 48px);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.result-small {
+  font-size: clamp(25px, 3.5vw, 34px);
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.key {
+  display: grid;
+  min-width: 0;
+  height: 55px;
+  place-items: center;
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 17px;
+  transition: background-color 140ms ease, color 140ms ease, transform 140ms ease;
+}
+
+.key:hover {
+  transform: translateY(-1px);
+}
+
+.key:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.key:focus-visible {
+  outline: 2px solid #5e9871;
+  outline-offset: 2px;
+}
+
+.key-number {
+  background: #f5f7f3;
+  color: #26342b;
+}
+
+.key-number:hover {
+  background: #edf2eb;
+}
+
+.key-utility {
+  background: #eef3ed;
+  color: #52705c;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.key-utility:hover {
+  background: #e3ece2;
+}
+
+.key-operator {
+  background: #f0f5ef;
+  color: var(--green);
+  font-size: 20px;
+}
+
+.key-operator:hover {
+  background: #e5eee4;
+}
+
+.key-zero {
+  grid-column: span 2;
+}
+
+.key-equals {
+  background: var(--green);
+  color: #fff;
+  font-size: 21px;
+  box-shadow: 0 5px 12px rgba(47, 109, 78, 0.18);
+}
+
+.key-equals:hover {
+  background: #285d42;
+}
+
+.calculator-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  margin: 17px 0 0;
+  color: #9aa49c;
+  font-size: 10px;
+  letter-spacing: 0.01em;
+}
+
+.sparkle {
+  color: #82a68a;
+  font-size: 12px;
+}
+
+.page-footer {
+  display: flex;
+  min-height: 61px;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(24, 37, 31, 0.09);
+  color: #98a199;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+}
+
+.page-footer span:last-child {
+  letter-spacing: 0.015em;
+}
+
+.page-footer span span {
+  color: var(--green);
+  font-size: 13px;
+}
+
+@media (max-width: 820px) {
+  .page-shell {
+    padding: 0 6%;
+  }
+
+  .hero {
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 390px);
+    gap: 38px;
+  }
+
+  .intro h1 {
+    font-size: clamp(50px, 7vw, 68px);
+  }
+
+  .calculator {
+    padding-right: 22px;
+    padding-left: 22px;
+  }
+}
+
+@media (max-width: 680px) {
+  .page-shell {
+    min-height: 100svh;
+    padding: 0 22px;
+  }
+
+  .topbar {
+    height: 72px;
+  }
+
+  .topbar-note {
+    font-size: 10px;
+  }
+
+  .hero {
+    width: min(100%, 410px);
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding: 52px 0 48px;
+  }
+
+  .intro {
+    padding-bottom: 0;
+  }
+
+  .eyebrow {
+    margin-bottom: 18px;
+    font-size: 9px;
+  }
+
+  .intro h1 {
+    font-size: clamp(52px, 13vw, 68px);
+  }
+
+  .intro-copy {
+    max-width: 340px;
+    margin-top: 17px;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .keyboard-hint,
+  .decorative-orbit {
+    display: none;
+  }
+
+  .calculator {
+    padding: 23px 20px 18px;
+    border-radius: 17px;
+  }
+
+  .display {
+    height: 123px;
+    padding-bottom: 18px;
+  }
+
+  .keypad {
+    gap: 8px;
+  }
+
+  .key {
+    height: 53px;
+    border-radius: 11px;
+  }
+
+  .page-footer {
+    min-height: 55px;
+    font-size: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
