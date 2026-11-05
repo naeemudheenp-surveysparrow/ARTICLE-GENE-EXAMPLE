@@ -1,9 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 
 type Operator = "+" | "−" | "×" | "÷";
+type ToolMode = "calculator" | "palindrome";
+type WordCheckResult = {
+  word: string;
+  isPalindrome: boolean | null;
+};
 
 const calculate = (left: number, right: number, operator: Operator) => {
   let result: number;
@@ -37,11 +42,14 @@ const operatorLabels: Record<Operator, string> = {
 };
 
 export default function Home() {
+  const [toolMode, setToolMode] = useState<ToolMode>("calculator");
   const [display, setDisplay] = useState("0");
   const [expression, setExpression] = useState("");
   const [storedValue, setStoredValue] = useState<number | null>(null);
   const [pendingOperator, setPendingOperator] = useState<Operator | null>(null);
   const [shouldResetDisplay, setShouldResetDisplay] = useState(false);
+  const [word, setWord] = useState("");
+  const [wordCheckResult, setWordCheckResult] = useState<WordCheckResult | null>(null);
 
   const resetAll = useCallback(() => {
     setDisplay("0");
@@ -146,6 +154,8 @@ export default function Home() {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (toolMode !== "calculator" || event.target instanceof HTMLInputElement) return;
+
       if (/^[0-9.]$/.test(event.key)) {
         event.preventDefault();
         inputDigit(event.key);
@@ -179,7 +189,24 @@ export default function Home() {
     inputPercent,
     resetAll,
     selectOperator,
+    toolMode,
   ]);
+
+  const checkWord = (event: FormEvent<HTMLFormElement>) => {
+  event.preventDefault();
+  const normalized = word.normalize("NFC").toLocaleLowerCase().replace(/[^\p{L}\p{N}]/gu, "");
+
+  if (normalized.length === 0) {
+    setWordCheckResult({ word, isPalindrome: null });
+    return;
+  }
+
+  const characters = Array.from(normalized);
+  setWordCheckResult({
+    word,
+    isPalindrome: characters.join("") === characters.reverse().join(""),
+  });
+  };
 
   const keys = [
     { label: "AC", action: resetAll, variant: "utility", ariaLabel: "Clear all" },
@@ -216,9 +243,9 @@ export default function Home() {
       <section className="hero" aria-labelledby="page-title">
         <div className="intro">
           <p className="eyebrow"><span className="eyebrow-line" /> YOUR EVERYDAY CALCULATOR</p>
-          <h1 id="page-title">Numbers,<br />made <span>simple.</span></h1>
+          <h1 id="page-title">Words,<br />made <span>simple.</span></h1>
           <p className="intro-copy">
-            From quick sums to the little calculations that keep your day moving. Just type, tap, and get on with it.
+            From quick sums to checking whether a word reads the same both ways. A little clarity, right when you need it.
           </p>
           <div className="keyboard-hint">
             <span className="keyboard-icon" aria-hidden="true">⌨</span>
@@ -228,40 +255,102 @@ export default function Home() {
           <div className="decorative-orbit orbit-two" aria-hidden="true" />
         </div>
 
-        <section className="calculator" aria-label="Calculator">
-          <div className="calculator-top">
-            <div className="calculator-title">
-              <span className="calculator-icon" aria-hidden="true"><span>+</span><span>−</span></span>
-              <div>
-                <p className="calculator-name">Quick calc</p>
-                <p className="calculator-subtitle">A clear answer, right away</p>
+        <section className="calculator" aria-label="Everyday tools">
+          <div className="tool-tabs" role="group" aria-label="Choose a tool">
+            <button
+              className={`tool-tab${toolMode === "calculator" ? " tool-tab-active" : ""}`}
+              type="button"
+              aria-pressed={toolMode === "calculator"}
+              onClick={() => setToolMode("calculator")}
+            >
+              Calculator
+            </button>
+            <button
+              className={`tool-tab${toolMode === "palindrome" ? " tool-tab-active" : ""}`}
+              type="button"
+              aria-pressed={toolMode === "palindrome"}
+              onClick={() => setToolMode("palindrome")}
+            >
+              Word check
+            </button>
+          </div>
+
+          {toolMode === "calculator" ? (
+            <div aria-label="Calculator">
+              <div className="calculator-top">
+                <div className="calculator-title">
+                  <span className="calculator-icon" aria-hidden="true"><span>+</span><span>−</span></span>
+                  <div>
+                    <p className="calculator-name">Quick calc</p>
+                    <p className="calculator-subtitle">A clear answer, right away</p>
+                  </div>
+                </div>
+                <span className="calculator-menu" aria-hidden="true">•••</span>
               </div>
+
+              <div className="display" aria-live="polite" aria-atomic="true">
+                <p className={`expression${expression === "Cannot divide by zero" ? " error-message" : ""}`}>
+                  {expression || "\u00a0"}
+                </p>
+                <p className={`result${display.length > 11 ? " result-small" : ""}`}>{display}</p>
+              </div>
+
+              <div className="keypad" aria-label="Calculator keys">
+                {keys.map((key) => (
+                  <button
+                    className={`key key-${key.variant}`}
+                    key={key.label}
+                    type="button"
+                    onClick={key.action}
+                    aria-label={key.ariaLabel ?? key.label}
+                  >
+                    {key.label}
+                  </button>
+                ))}
+              </div>
+
+              <p className="calculator-footer"><span className="sparkle" aria-hidden="true">✳</span> Simple math. No fuss.</p>
             </div>
-            <span className="calculator-menu" aria-hidden="true">•••</span>
-          </div>
+          ) : (
+            <div aria-label="Palindrome checker">
+              <div className="calculator-top">
+                <div className="calculator-title">
+                  <span className="calculator-icon word-icon" aria-hidden="true">Aa</span>
+                  <div>
+                    <p className="calculator-name">Palindrome check</p>
+                    <p className="calculator-subtitle">Does it read the same both ways?</p>
+                  </div>
+                </div>
+              </div>
 
-          <div className="display" aria-live="polite" aria-atomic="true">
-            <p className={`expression${expression === "Cannot divide by zero" ? " error-message" : ""}`}>
-              {expression || "\u00a0"}
-            </p>
-            <p className={`result${display.length > 11 ? " result-small" : ""}`}>{display}</p>
-          </div>
+              <form className="word-checker" onSubmit={checkWord}>
+                <label className="word-label" htmlFor="word-input">Enter a word or phrase</label>
+                <input
+                  className="word-input"
+                  id="word-input"
+                  type="text"
+                  value={word}
+                  onChange={(event) => {
+                    setWord(event.target.value);
+                    setWordCheckResult(null);
+                  }}
+                  placeholder="Try “Never odd or even”"
+                  autoComplete="off"
+                />
+                <p className="word-hint">Spaces, punctuation, and letter case are ignored.</p>
+                <button className="word-submit" type="submit">Check word</button>
+                <p className="word-result" aria-live="polite" aria-atomic="true">
+                  {wordCheckResult?.isPalindrome === null
+                    ? "Enter at least one letter or number."
+                    : wordCheckResult
+                      ? `"${wordCheckResult.word}" ${wordCheckResult.isPalindrome ? "is" : "is not"} a palindrome.`
+                      : "\u00a0"}
+                </p>
+              </form>
 
-          <div className="keypad" aria-label="Calculator keys">
-            {keys.map((key) => (
-              <button
-                className={`key key-${key.variant}`}
-                key={key.label}
-                type="button"
-                onClick={key.action}
-                aria-label={key.ariaLabel ?? key.label}
-              >
-                {key.label}
-              </button>
-            ))}
-          </div>
-
-          <p className="calculator-footer"><span className="sparkle" aria-hidden="true">✳</span> Simple math. No fuss.</p>
+              <p className="calculator-footer"><span className="sparkle" aria-hidden="true">✳</span> Words in, answer out.</p>
+            </div>
+          )}
         </section>
       </section>
 

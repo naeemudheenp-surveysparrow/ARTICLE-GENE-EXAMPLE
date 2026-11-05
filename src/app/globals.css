@@ -217,6 +217,44 @@ button {
   box-shadow: 0 28px 70px rgba(31, 55, 39, 0.09), 0 3px 9px rgba(31, 55, 39, 0.03);
 }
 
+.tool-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  margin-bottom: 24px;
+  padding: 4px;
+  border-radius: 12px;
+  background: #f5f7f3;
+}
+
+.tool-tab {
+  min-height: 36px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #78827b;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  transition: background-color 140ms ease, color 140ms ease, box-shadow 140ms ease;
+}
+
+.tool-tab:hover {
+  color: var(--green);
+}
+
+.tool-tab:focus-visible,
+.word-submit:focus-visible {
+  outline: 2px solid #5e9871;
+  outline-offset: 2px;
+}
+
+.tool-tab-active {
+  background: #fff;
+  color: var(--green);
+  box-shadow: 0 1px 4px rgba(31, 55, 39, 0.1);
+}
+
 .calculator-top {
   display: flex;
   align-items: center;
@@ -240,6 +278,12 @@ button {
   color: var(--green);
   font-size: 15px;
   font-weight: 600;
+}
+
+.word-icon {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 13px;
+  font-style: italic;
 }
 
 .calculator-name,
@@ -395,6 +439,80 @@ button {
   letter-spacing: 0.01em;
 }
 
+.word-checker {
+  margin-top: 30px;
+}
+
+.word-label {
+  display: block;
+  margin-bottom: 9px;
+  color: #526057;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.word-input {
+  width: 100%;
+  min-height: 49px;
+  padding: 0 14px;
+  border: 1px solid #e3e9e1;
+  border-radius: 11px;
+  background: #fbfcfa;
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.word-input::placeholder {
+  color: #a4ada5;
+}
+
+.word-input:focus {
+  border-color: #77a486;
+  box-shadow: 0 0 0 3px rgba(119, 164, 134, 0.13);
+}
+
+.word-hint {
+  margin: 9px 0 16px;
+  color: #98a39a;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.word-submit {
+  width: 100%;
+  min-height: 47px;
+  border: 0;
+  border-radius: 11px;
+  background: var(--green);
+  color: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: background-color 140ms ease, transform 140ms ease;
+}
+
+.word-submit:hover {
+  transform: translateY(-1px);
+  background: #285d42;
+}
+
+.word-submit:active {
+  transform: translateY(0) scale(0.99);
+}
+
+.word-result {
+  min-height: 18px;
+  margin: 15px 0 0;
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
 .sparkle {
   color: #82a68a;
   font-size: 12px;
@@ -489,6 +607,10 @@ button {
   .calculator {
     padding: 23px 20px 18px;
     border-radius: 17px;
+  }
+
+  .tool-tabs {
+    margin-bottom: 21px;
   }
 
   .display {
